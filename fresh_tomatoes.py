@@ -1,4 +1,9 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import webbrowser
+from io import open
 from os.path import abspath
 
 # The main page layout and title bar
@@ -24,16 +29,14 @@ def create_movie_tiles_content(movies):
 
 
 def open_movies_page(movies):
-    # Create or overwrite the output file
-    output_file = open('fresh_tomatoes.html', 'w')
-
     # Replace the movie tiles placeholder generated content
     rendered_content = main_page_content.format(
         movie_tiles=create_movie_tiles_content(movies))
 
-    # Output the file
-    output_file.write(rendered_content)
-    output_file.close()
+    # TODO get abspath of filename here
+    # Output the file, overwriting it if one already exists
+    with open('fresh_tomatoes.html', 'w', encoding='utf-8') as output_file:
+        output_file.write(rendered_content)
 
     # open the output file in the browser (in a new tab, if possible)
     webbrowser.open_new_tab('file://' + abspath(output_file.name))
