@@ -1,6 +1,5 @@
 import webbrowser
-import os
-
+from os.path import abspath
 
 # The main page layout and title bar
 with open('template.html', 'r') as f:
@@ -37,5 +36,4 @@ def open_movies_page(movies):
     output_file.close()
 
     # open the output file in the browser (in a new tab, if possible)
-    url = os.path.abspath(output_file.name)
-    webbrowser.open('file://' + url, new=2)
+    webbrowser.open_new_tab('file://' + abspath(output_file.name))
