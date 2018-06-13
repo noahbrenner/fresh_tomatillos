@@ -35,7 +35,7 @@ def open_movies_page(movies):
 
     # TODO get abspath of filename here
     # Output the file, overwriting it if one already exists
-    with open('fresh_tomatoes.html', 'w', encoding='utf-8') as output_file:
+    with open('fresh_tomatillos.html', 'w', encoding='utf-8') as output_file:
         output_file.write(rendered_content)
 
     # open the output file in the browser (in a new tab, if possible)

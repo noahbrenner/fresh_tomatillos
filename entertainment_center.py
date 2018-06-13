@@ -9,7 +9,7 @@ except ImportError:
     # Already in Python 3
     pass
 
-from fresh_tomatoes import open_movies_page
+from fresh_tomatillos import open_movies_page
 from media import Movie
 from get_config import get_config
 
