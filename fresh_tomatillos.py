@@ -1,42 +1,39 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-
 import webbrowser
-from io import open
-from os.path import abspath
-
-# The main page layout and title bar
-with open('template.html', 'r') as f:
-    main_page_content = f.read()
-
-# A single movie entry html template
-movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{movie.youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img alt="" src="{movie.poster_image_url}" width="220" height="342">
-    <h2>{movie.title}</h2>
-</div>
-'''
+import io
+from os import path
 
 
-def create_movie_tiles_content(movies):
-    # The HTML content for this section of the page
-    content = ''
-    for movie in movies:
-        # Append the tile for the movie with its content filled in
-        content += movie_tile_content.format(movie=movie)
-    return content
+def _read_file(path):
+    """Return the contents of a file as a Unicode string."""
+    with io.open(path, 'r', encoding='utf-8') as input_file:
+        return input_file.read()
+
+
+def _create_movie_tiles(movies, tile_template):
+    """Return a string containing unique HTML for each movie."""
+    return '\n'.join(tile_template.format(movie=movie) for movie in movies)
 
 
 def open_movies_page(movies):
-    # Replace the movie tiles placeholder generated content
-    rendered_content = main_page_content.format(
-        movie_tiles=create_movie_tiles_content(movies))
+    """Generate an HTML movies page and open it in a web browser."""
+    # Get the content of our HTML templates.  Each one has `{variable}`
+    # sections meant to be used with `str.format()`.
+    main_page = _read_file('template.html')     # Page layout and title bar
+    movie_tile = _read_file('movie_tile.html')  # Single movie tile
 
-    # TODO get abspath of filename here
+    # Compile the full movies page, including movie tiles
+    rendered_content = main_page.format(
+        movie_tiles=_create_movie_tiles(movies, movie_tile))
+
+    # Get the full path of where we'll save the rendered content
+    output_path = path.abspath('fresh_tomatillos.html')
+
     # Output the file, overwriting it if one already exists
-    with open('fresh_tomatillos.html', 'w', encoding='utf-8') as output_file:
+    with io.open(output_path, 'w', encoding='utf-8') as output_file:
         output_file.write(rendered_content)
 
-    # open the output file in the browser (in a new tab, if possible)
-    webbrowser.open_new_tab('file://' + abspath(output_file.name))
+    # Open the output file in the browser (in a new tab, if possible)
+    webbrowser.open_new_tab('file://' + output_path)

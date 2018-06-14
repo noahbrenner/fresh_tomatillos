@@ -202,8 +202,6 @@ youtube: YouTube video ID
 To Do
 -----
 
-* Move small HTML template to a separate file
-* Make a function for reading templates from files
 * Implement `__repr__`, maybe others
 * Parse URL to get YouTube ID
     * Check if it's already the ID
