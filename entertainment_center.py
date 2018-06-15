@@ -41,4 +41,5 @@ if __name__ == '__main__':
         config.sections()
     ))
 
+    print(movies)
     open_movies_page(movies)
