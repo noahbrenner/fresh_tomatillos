@@ -1,13 +1,13 @@
 Fresh Tomatillos
 ================
 
-> Generate a single-page movie trailer website
+> Generate a single-page website to display your favorite movies' trailers
 
-Fresh Tomatillos will generate the HTML, CSS, and JavaScript to display a page showing movie posters and trailers, then automatically open the page in your default browser. The set of movies their descriptions, posters, and trailers (YouTube videos) are all easily customizable.
+Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies on the page, including descriptions, poster images, and trailers (YouTube videos).
 
-Fresh Tomatillos comes with a sample list of movies. The usage described in this section makes use of that sample list. To customize the list of movies, see the [Config File](#config-file) section.
+Fresh Tomatillos comes with a sample list of movies so that you can test it out right away. To customize the list of movies, see the [Config File](#config-file) section of this README.
 
-To use this program (effectively), you must have an active internet connection, since images and YouTube videos will not be displayed otherwise. Without an internet connection, you can absolutely run the program to generate the HTML file, you'll just need to view the result later when you *do* have internet access.
+To make good use of this program, you must have an active internet connection, since images and YouTube videos will not be displayed otherwise. Even without an internet connection, you can run the program to generate the webpage source file, you'll just need to view the result later when you *do* have internet access.
 
 Setup
 -----
@@ -220,8 +220,14 @@ This line starts with `youtube:` and is followed by either a YouTube video ID or
     summary = A thing happens!  
     ```
 
+About
+-----
+
+This project was built starting from Udacity's [ud036_StarterCode][udacity-repo] repo, though almost all of the code in Fresh Tomatillos is new or has been modified from that template.
+
 [download]: https://github.com/noahbrenner/fresh_tomatillos/archive/master.zip
 [one-sheet]: https://en.wikipedia.org/wiki/One_sheet
+[udacity-repo]: https://github.com/udacity/ud036_StarterCode
 [utf-8]: https://en.wikipedia.org/wiki/UTF-8
 
 To Do
@@ -230,7 +236,6 @@ To Do
 * Validate YouTube video ID
 * Validate image URLs (no 404) (Check if it's an image format?)
 * README: The user must have an active internet connection to verify and display images and YouTube videos
-* README: Starter code from Udacity, almost everything modified at this point
 * Change directory structure (lib, build)
 * GitHub Pages example
 * Email GitHub about this not being a fork
