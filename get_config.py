@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals, with_statement
-from io import open
+import io
 
 # Use RawConfigParser so that interpolation is not performed when reading data
 try:
-    from configparser import RawConfigParser # Python 3
+    from configparser import RawConfigParser  # Python 3
 except ImportError:
-    from ConfigParser import RawConfigParser # Python 2
+    from ConfigParser import RawConfigParser  # Python 2
 
 
 def _has_valid_config_structure(config, valid_keys):
@@ -37,9 +37,8 @@ def _has_valid_config_structure(config, valid_keys):
 def get_config(file_path, valid_keys):
     config = RawConfigParser()
 
-    # Use io.open to handle multibyte characters well, using unicode strings
-    with open(file_path, 'r', encoding='utf-8') as config_file:
-        # Load config settings from the file descriptor
+    # Use io.open so we can specify UTF-8 and handle non-ASCII data in Python 2
+    with io.open(file_path, 'r', encoding='utf-8') as config_file:
         config.readfp(config_file)
 
     return config if _has_valid_config_structure(config, valid_keys) else None
