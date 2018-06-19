@@ -85,7 +85,7 @@ To change this list of movies displayed on the generated page, you can edit the 
 [Movie Title]
 summary: Brief description of the plot.
 poster: URL of an image file which will be displayed as the poster
-youtube: YouTube video ID
+youtube: YouTube video ID or full URL
 ```
 
 ### Config Parameters
@@ -106,9 +106,14 @@ This line starts with `poster:` and is followed by a URL of an image file. The i
 
 #### `youtube`
 
-This line starts with `youtube:` and is followed by a YouTube video ID.
+This line starts with `youtube:` and is followed by either a YouTube video ID or a YouTube video URL. YouTube's video IDs are case sensitive and can contain characters that look similar (`1lIi`), so I recommend copying and pasting IDs and URLs rather than typing them out manually.
 
-  You can find the YouTube video ID in the URL itself. It will be after the characters `v=` and will end before reaching a `&` character, if there is one. The `v=` will immediately follow either a `?` or a `&`. Currently, all YouTube video IDs have 11 characters.
+* Using a **Video ID**:
+
+  You can find the YouTube video ID in the URL itself. It is a string of characters which may contain letters, numbers, underscores, and dashes.
+
+  * In a **long URL** (`youtube.com`), the ID will start after the characters `v=` and end before reaching a `&` character (if there is one). Either a `?` or a `&` will be immediately before the `v=` (so: `?v=` or `&v=`).
+  * In a **short URL** (`youtu.be`), it will follow the last `/` character. Currently, all YouTube video IDs have 11 characters.
 
   All of the URLs below point to the same video, which has the ID **`kAG39jKi0lI`**:
 
@@ -116,9 +121,19 @@ This line starts with `youtube:` and is followed by a YouTube video ID.
   <code>https://www.youtube.com/watch?v=<strong>kAG39jKi0lI</strong>
   https://www.youtube.com/watch?v=<strong>kAG39jKi0lI</strong>&feature=youtu.be
   https://www.youtube.com/watch?feature=youtu.be&v=<strong>kAG39jKi0lI</strong></code>
+  <code>https://youtu.be/<strong>kAG39jKi0lI</strong></code>
   </pre>
 
-  YouTube video IDs are case sensitive, so I recommend copying and pasting them rather than typing them out manually.
+* Using a **Video URL**:
+
+  The URL must have one of the following hosts:
+
+    ```
+    www.youtube.com   - long URL
+    m.youtube.com     - long URL
+    youtube.com       - long URL
+    youtu.be          - short URL
+    ```
 
 ### Other Config-related Details
 
@@ -212,9 +227,7 @@ This line starts with `youtube:` and is followed by a YouTube video ID.
 To Do
 -----
 
-* Parse URL to get YouTube ID
-    * Check if it's already the ID
-    * Validate the calculated URL
+* Validate YouTube video ID
 * Validate image URLs (no 404) (Check if it's an image format?)
 * README: The user must have an active internet connection to verify and display images and YouTube videos
 * README: Starter code from Udacity, almost everything modified at this point
