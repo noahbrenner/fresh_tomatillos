@@ -90,15 +90,23 @@ youtube: YouTube video ID
 
 ### Config Parameters
 
-**All parameters are required for each movie.** If any are missing or if there are extra parameters not defined here (including typos), you will get an error message and the webpage will not be generated. Within the section defined by the movie title, the other parameters may be defined in any order.
+**All 4 parameters are required for each movie.** If any are missing or if there are extra parameters not defined here (including typos), you will get an error message and the webpage will not be generated. Within the section defined by a given movie's title, its other parameters (`key: value` pairs) may be defined in any order.
 
-* **`[Movie Title]`** - The title must be enclosed in square brackets (`[Name of Movie]`) and on its own line. The brackets designate a section of the config file. All parameters below this line apply to this movie until another movie title is reached.
+#### `[Movie Title]`
 
-* **`summary`** - This line starts with `summary:` and is followed by your own brief summary of the movie. Any extra spaces at the beginning and end of your summary will be removed.
+The title must be enclosed in square brackets (`[Name of Movie]`) and on its own line. The brackets designate a section of the config file. All parameters below this line, but before the next movie title, apply to this movie.
 
-* **`poster`** - This line starts with `poster:` and is followed by a URL of an image file. The image file should have approximately the proportions of a standard movie poster One sheet, about 1.5 times as tall as it is wide.
+#### `summary`
 
-* **`youtube`** - This line starts with `youtube:` and is followed by a YouTube video ID.
+This line starts with `summary:` and is followed by a brief summary of the movie. Any extra spaces at the beginning or end of your summary will be removed.
+
+#### `poster`
+
+This line starts with `poster:` and is followed by a URL of an image file. The image file should have approximately the proportions of a standard movie poster [one sheet][one-sheet], about 1.5 times as tall as it is wide.
+
+#### `youtube`
+
+This line starts with `youtube:` and is followed by a YouTube video ID.
 
   You can find the YouTube video ID in the URL itself. It will be after the characters `v=` and will end before reaching a `&` character, if there is one. The `v=` will immediately follow either a `?` or a `&`. Currently, all YouTube video IDs have 11 characters.
 
@@ -112,23 +120,23 @@ youtube: YouTube video ID
 
   YouTube video IDs are case sensitive, so I recommend copying and pasting them rather than typing them out manually.
 
-### Other Technical Details
+### Other Config-related Details
 
 * After making a change to the config file, you'll need to run the `entertainment_center.py` again to generate a new HTML file.
 
 * The config file must be saved using [UTF-8 encoding][utf-8], which any decent text editor should be able to do. This allows you to use just about any Unicode character in the config file (é ñ א).
 
-* Comments may be included in the config file. They must be on their own line and start with the `#` character.
+* Comments may be included in the config file. They must be on their own line and start with a `#` or `;` character.
 
   ```ini
   # This is a valid comment
 
   [Some Movie] # NOT a valid comment
   summary: A thing happens! # NOT a valid comment
-  # This is a valid comment
+  ; This is a valid comment
   ```
 
-* If you define the same **parameter** more than once for a given movie, the definition of that parameter that is found latest in the file will be the one used.
+* If you define the same **key** more than once for a given movie, the definition of that parameter that is found latest in the file will be the one used.
 
   If you define the same **movie** more than once, the movie definition will be treated as though all parameters for it were in a single section (either adding to or overriding previous values). This means that a *new* movie record is not created. Thus, you can't define multiple movies with exactly the same title. One way to include movies with identical names is to use their release year as part of the title (`[The Reboot Reloaded (2000)]`).
 
@@ -183,20 +191,22 @@ youtube: YouTube video ID
     [mY aWeSoMe MoViE]
     ```
 
-* A `=` character may be used instead of `:` to set movie parameters (except for the title). The following lines are equivalent:
+* A `=` character may be used instead of `:` to separate keys and values (this doesn't apply to the title). The following lines are equivalent:
 
     ```ini
     summary: A thing happens!
     summary=A thing happens!
+    ```
 
-    # Leading and trailing whitespace is removed, so these
-    # lines are treated the same as the examples above
-    # (and yes, there is evil trailing whitespace here):
+    Leading and trailing whitespace is removed, so these lines are treated the same as the examples above (and yes, there is evil trailing whitespace here):
+
+    ```ini
     summary :    A thing happens!  
     summary = A thing happens!  
     ```
 
 [download]: https://github.com/noahbrenner/fresh_tomatillos/archive/master.zip
+[one-sheet]: https://en.wikipedia.org/wiki/One_sheet
 [utf-8]: https://en.wikipedia.org/wiki/UTF-8
 
 To Do
