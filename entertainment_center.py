@@ -10,6 +10,13 @@ from get_config import get_config
 import movie_args
 
 
+try:
+    # Make sure str() outputs Unicode in Python 2
+    str = unicode
+except NameError:
+    pass  # str is already Unicode in Python 3
+
+
 def main():
     """Display movie trailer page in a browser using data from config file.
 
@@ -27,8 +34,14 @@ def main():
     movies = [Movie(*movie_args.get_args(config, title))
               for title in config.sections()]
 
-    # Display our results in the terminal and the browser
-    print(movies)
+    # Uncomment this line for repr output
+    # print(repr(movies))
+
+    print('Opening webpage for:')
+
+    for movie in movies:
+        print(str(movie))
+
     open_movies_page(movies)
 
 
