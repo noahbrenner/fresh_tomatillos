@@ -238,7 +238,6 @@ To Do
 * README: The user must have an active internet connection to verify and display images and YouTube videos
 * Change directory structure (lib, build)
 * GitHub Pages example
-* Email GitHub about this not being a fork
 * HTML responsive design
 * JavaScript adjustments
 * Add a CLI?
