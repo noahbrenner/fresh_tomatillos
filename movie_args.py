@@ -10,11 +10,12 @@ except ImportError:
     # Python 2
     from urlparse import urlsplit, parse_qs
 
+from exception import InvalidVideoID
+
 
 YOUTUBE_ID_CHARACTERS = frozenset(string.ascii_letters + string.digits + '-_')
 LONG_HOSTNAMES = ('www.youtube.com', 'youtube.com', 'm.youtube.com')
 SHORT_HOSTNAMES = ('youtu.be',)
-ALL_HOSTNAMES = LONG_HOSTNAMES + SHORT_HOSTNAMES
 
 
 def _is_potential_youtube_id(id_string):
@@ -36,25 +37,25 @@ def _is_potential_youtube_id(id_string):
     return id_string and set(id_string).issubset(YOUTUBE_ID_CHARACTERS)
 
 
-def _get_youtube_id_from_url(url):
-    # Initialize return value
-    youtube_id = None
-
-    # Parse the URL
+def _parse_youtube_url(url):
     split_url = urlsplit(url)
 
-    # Add a URL scheme if it's missing but the URL otherwise looks good
-    # (when there is no scheme, urlsplit includes the hostname in 'path')
-    if (not split_url.scheme and
-            any(hostname in split_url.path for hostname in ALL_HOSTNAMES)):
+    # Add a URL scheme if `url` doesn't already include one
+    # (without a scheme, urlsplit incorrectly includes the hostname in 'path')
+    if (not split_url.scheme):
         split_url = urlsplit('https://' + url)
 
-    # Now we can look for the YouTube ID based on the hostname
-    if split_url.hostname in LONG_HOSTNAMES:
-        # URL might look like https://www.youtube.com/watch?v=youtube__id
+    return split_url
 
+
+def _get_youtube_id_from_url(url):
+    youtube_id = None  # Initialize return value
+    split_url = _parse_youtube_url(url)
+
+    # For URLs like https://www.youtube.com/watch?v=youtube__id
+    if split_url.hostname in LONG_HOSTNAMES:
+        # e.g. query: {'v': ['youtube__id']}
         query = parse_qs(split_url.query)
-        # query might look like {'v': ['youtube__id']}
 
         try:
             v_value = query['v'][0]
@@ -64,10 +65,9 @@ def _get_youtube_id_from_url(url):
             if _is_potential_youtube_id(v_value):
                 youtube_id = v_value
 
+    # For URLs like https://youtu.be/youtube__id
     elif split_url.hostname in SHORT_HOSTNAMES:
-        # URL might look like https://youtu.be/youtube__id
-
-        # Remove the leading '/' from '/youtube__id'
+        # Remove leading '/' from '/youtube__id'
         path = split_url.path[1:]
 
         if _is_potential_youtube_id(path):
@@ -95,23 +95,20 @@ def _get_youtube_id(youtube_source, title):
         A string containing a YouTube Video ID.
 
     Raises:
-        ValueError: Raised if `id_string` is not a valid YouTube link or
-            a valid YouTube video ID.
+        InvalidVideoID: Raised if `id_string` is neither a valid
+            YouTube video ID nor a valid YouTube URL.
     """
+    # Return early if youtube_source already looks like an ID
     if _is_potential_youtube_id(youtube_source):
-        youtube_id = youtube_source
-    else:
-        youtube_id = _get_youtube_id_from_url(youtube_source)
+        return youtube_source
+
+    youtube_id = _get_youtube_id_from_url(youtube_source)
 
     if not youtube_id:
-        error = ('An invalid YouTube ID or URL was provided for [{movie}].\n'
-                 'Please update the config file and run the program again.\n'
-                 '  Invalid ID or URL:\n'
-                 '   - {content}')
-
-        raise ValueError(error.format(
-            movie=title,
-            content=youtube_source))
+        raise InvalidVideoID(
+            title=title,
+            video_source=youtube_source,
+            source_type='ID or URL')
 
     return youtube_id
 
@@ -133,7 +130,9 @@ def get_args(config, title):
         e.g. ['Movie Title', 'Summary', 'poster_url', 'YouTube_video_id']
 
     Raises:
-        ValueError: May be raised by a call to _get_youtube_id().
+        InvalidVideoID: Raised if the 'youtube' key of the current movie is
+            not valid as either a  YouTube video ID or a YouTube URL.
+            (raised in a call to _get_youtube_id())
     """
     def get_key(key):
         """Look up `key` in config for the current movie title."""
@@ -142,6 +141,5 @@ def get_args(config, title):
     return (title,
             get_key('summary'),
             get_key('poster'),
-            # May raise ValueError, but that error should be caught at
-            # a higher level by the caller of get_args().
+            # Exceptions raised by _get_youtube_id() are not caught here
             _get_youtube_id(get_key('youtube'), title))

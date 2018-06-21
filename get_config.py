@@ -9,8 +9,26 @@ try:
 except ImportError:
     from ConfigParser import RawConfigParser  # Python 2
 
+from exception import InvalidConfigKeys
 
-def _find_config_errors(config, valid_keys):
+
+def _movie_key_frozensets(config):
+    """Return a generator providing titles and frozensets of movie options.
+
+    Args:
+        config: An instance of ConfigParser.
+
+    Yields:
+        tuples of (movie_title, movie_keys). Details of tuple contents:
+            movie_title: A string - one of the sections in `config`.
+
+            movie_keys: A frozenset - the option keys in `movie_title`.
+    """
+    for movie_title in config.sections():
+        yield movie_title, frozenset(config.options(movie_title))
+
+
+def _verified_config(config, valid_keys):
     """Determine if `config` has all required values and no extra values.
 
     If `valid_keys` is ['foo', 'bar'], each movie included in `config` must
@@ -24,47 +42,32 @@ def _find_config_errors(config, valid_keys):
     checked for duplicate values.
 
     Args:
-        config: An instance of *ConfigParser to validate.
+        config: An instance of ConfigParser to validate.
 
         valid_keys: An iterable of valid keys for each movie in `config` to
-            contain.  This will be converted to frozenset if it's not
+            contain.  This will be converted to frozenset if it is not
             already a set or a frozenset.
 
     Returns:
-        An error string, appropriate for surfacing to end users, which
-        describes any extra and/or missing keys in `config`.  If there are no
-        errors, returns None.
+        The same ConfigParser instance that was passed in.
+
+    Raises:
+        InvalidConfigKeys: Raised if there are missing or extra option keys
+            for any movie section in `config`.
     """
     if not isinstance(valid_keys, (set, frozenset)):
         valid_keys = frozenset(valid_keys)
 
-    errors = None
+    # Collect a list of errors, if any, grouped by config section
+    # Results in: ((movie_title, missing_keys, extra_keys), ...)
+    errors = tuple((movie_title, valid_keys - keys, keys - valid_keys)
+                   for movie_title, keys in _movie_key_frozensets(config)
+                   if not valid_keys == keys)
 
-    # Check each config section for errors
-    for movie in config.sections():
-        movie_keys = frozenset(config.options(movie))
+    if errors:
+        raise InvalidConfigKeys(errors)
 
-        # If there are invalid config keys, collect data to report to the user
-        if not movie_keys == valid_keys:
-            errors = errors or []  # Initialize errors if it doesn't exist
-            errors.extend([
-                'Config settings for the movie [%s] are not valid.' % movie,
-                'Please update your config file and run the program again.'])
-
-            missing_keys = valid_keys - movie_keys
-            extra_keys = movie_keys - valid_keys
-
-            if missing_keys:
-                errors.extend([
-                    '  This information is missing:',
-                    '\n'.join('   - ' + key for key in missing_keys)])
-
-            if extra_keys:
-                errors.extend([
-                    '  This information should not be included:',
-                    '\n'.join('   - ' + key for key in extra_keys)])
-
-    return '\n'.join(errors) if errors else None
+    return config
 
 
 def get_config(file_path, valid_keys):
@@ -84,7 +87,9 @@ def get_config(file_path, valid_keys):
         An instance of ConfigParser.
 
     Raises:
-        ValueError: Raised if there were extra or missing keys in `config`.
+        InvalidConfigKeys: Raised if there are missing or extra option keys
+            for any movie section in `config`.
+            (raised in a call to _verified_config())
     """
     config = RawConfigParser()
 
@@ -92,10 +97,5 @@ def get_config(file_path, valid_keys):
     with io.open(file_path, 'r', encoding='utf-8') as config_file:
         config.readfp(config_file)
 
-    # Check config data for errors
-    error_message = _find_config_errors(config, valid_keys)
-
-    if error_message:
-        raise ValueError(error_message)
-
-    return config
+    # Exceptions raised by _verified_config() are not caught here
+    return _verified_config(config, valid_keys)

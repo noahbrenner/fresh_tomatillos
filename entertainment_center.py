@@ -4,9 +4,10 @@
 from __future__ import print_function, unicode_literals
 import sys
 
+from exception import ConfigError
 from fresh_tomatillos import open_movies_page
-from media import Movie
 from get_config import get_config
+from media import Movie
 import movie_args
 
 
@@ -48,6 +49,6 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except ValueError as e:
-        print(e.args[0], file=sys.stderr)
+    except ConfigError as e:
+        print(e.message, file=sys.stderr)
         sys.exit(1)
