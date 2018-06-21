@@ -24,9 +24,15 @@ def open_movies_page(movies):
     main_page = _read_file('template.html')     # Page layout and title bar
     movie_tile = _read_file('movie_tile.html')  # Single movie tile
 
+    # Get static content to be added to our template
+    scripts = _read_file('scripts.js')
+    styles = _read_file('styles.css')
+
     # Compile the full movies page, including movie tiles
     rendered_content = main_page.format(
-        movie_tiles=_create_movie_tiles(movies, movie_tile))
+        movie_tiles=_create_movie_tiles(movies, movie_tile),
+        scripts=scripts,
+        styles=styles)
 
     # Get the full path of where we'll save the rendered content
     output_path = path.abspath('fresh_tomatillos.html')
