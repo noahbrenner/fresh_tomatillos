@@ -1,7 +1,7 @@
 Fresh Tomatillos
 ================
 
-> Generate a single-page website to display your favorite movies' trailers
+> Create a single-page website to display your favorite movies' trailers
 
 Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies on the generated page, including descriptions, poster images, and trailers (YouTube videos). From that page, you can click on any poster to play the trailer for it.
 
@@ -69,15 +69,35 @@ pip install --user -e .
 Usage
 -----
 
-### Standard Usage
+### Option 1: After `pip` Install
 
-Using the sample config file is as simple as running this in your terminal:
+* Use the sample config file
 
-```bash
-fresh_tomatillos
-```
+  ```bash
+  fresh_tomatillos
+  ```
 
-### Running From a Git Clone
+* Use your own config file (after [creating one](#config-file))
+
+  ```bash
+  fresh_tomatillos my_movies.cfg
+  ```
+
+* Display usage info
+
+  ```bash
+  fresh_tomatillos -h
+  fresh_tomatillos --help
+  ```
+
+* Display version
+
+  ```bash
+  fresh_tomatillos -v
+  fresh_tomatillos --version
+  ```
+
+### Option 2: Running From a Git Clone
 
 If you cloned the repo, you also have the option of running Fresh Tomatillos from the repo directory. Make sure your working directory is at the top level of the repo first:
 
@@ -89,13 +109,21 @@ Then run the program using Python explicitly:
 
 ```bash
 python3 -m fresh_tomatillos
-# to run in Python 2 instead, replace `python3` with `python`
+# To run in Python 2 instead, replace `python3` with `python`
+```
+
+All of the same arguments can be passed as after a `pip` install, for example:
+
+```bash
+python3 -m fresh_tomatillos my_movies.cfg
 ```
 
 Config File
 -----------
 
-To change this list of movies displayed on the generated page, you can edit the `test.cfg` file with any text editor. The basic format of each movie listed in that file looks like this:
+To make your own list of movies to display on the generated page, you can create a config file using any plain text editor, then [pass `fresh_tomatillos` the path to your file](#usage). Your config file can have any file extention, but I recommend `.cfg` or `.ini` so that text editors providing syntax highlighting can make use of that feature (e.g. `my_movies.cfg`).
+
+A config file can list any number of movies. The format for each listed movie is:
 
 ```ini
 [Movie Title]
@@ -110,7 +138,7 @@ youtube: YouTube video ID or full URL
 
 #### `[Movie Title]`
 
-The title must be enclosed in square brackets (`[Name of Movie]`) and on its own line. The brackets designate a section of the config file. All parameters below this line, but before the next movie title, apply to this movie.
+The title must be enclosed in square brackets (`[Name of Movie]`) and on its own line. These brackets designate a section of the config file. All parameters below the movie title line, but before the next title, apply to this movie.
 
 #### `summary`
 
@@ -153,11 +181,11 @@ This line starts with `youtube:` and is followed by either a YouTube video ID or
 
 ### Other Config-related Details
 
-* After making a change to the config file, you'll need to run `fresh_tomatillos` again to generate a new HTML file.
+* After making a change to a config file, you'll need to run `fresh_tomatillos` again to generate a new HTML file.
 
-* The config file must be saved using [UTF-8 encoding][utf-8], which any decent text editor should be able to do. This allows you to use just about any Unicode character in the config file (é ñ א).
+* A config file must be saved using [UTF-8 encoding][utf-8], which any decent text editor should be able to do. This allows you to include just about any Unicode character in the file (é ñ א).
 
-* Comments may be included in the config file. They must be on their own line and start with a `#` or `;` character.
+* Comments may be included in config files. Comments must be on their own line and start with a `#` or `;` character. Comments will not affect the generated webpage.
 
   ```ini
   # This is a valid comment
@@ -242,7 +270,6 @@ About
 
 This project was built starting from Udacity's [ud036_StarterCode][udacity-repo] repo, though almost all of the code in Fresh Tomatillos is new or has been modified from that template.
 
-[download]: https://github.com/noahbrenner/fresh_tomatillos/archive/master.zip
 [one-sheet]: https://en.wikipedia.org/wiki/One_sheet
 [udacity-repo]: https://github.com/udacity/ud036_StarterCode
 [utf-8]: https://en.wikipedia.org/wiki/UTF-8
@@ -252,8 +279,7 @@ To Do
 
 * Validate YouTube video ID
 * Validate image URLs (no 404) (Check if it's an image format?)
-* README: The user must have an active internet connection to verify and display images and YouTube videos
+* README: The user must have an active internet connection to verify images and YouTube videos
 * GitHub Pages example
 * HTML responsive design
 * JavaScript adjustments
-* Add a CLI?

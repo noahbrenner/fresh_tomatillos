@@ -1,15 +1,42 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""
+Implements the command-line interface for fresh_tomatillos.
+
+
+Usage:
+  fresh_tomatillos
+  fresh_tomatillos <file_path>
+  fresh_tomatillos -v | --version
+  fresh_tomatillos -h | --help
+
+Where:
+  <file_path> is a path to a config file from which to read movie data.
+
+Config File Format:
+  [Movie Title]
+  summary: Brief description of the plot.
+  poster: https://url/of/poster/image
+  youtube: YouTube_video-id
+
+Config File notes:
+ - `youtube` value may also be a full YouTube URL.
+ - Any number of movie sections may be included in a single config file.
+"""
+
 from __future__ import print_function, unicode_literals
+import errno
+import io
 import os
 import sys
+import webbrowser
 
-from .exceptions import ConfigError
-from .fresh_tomatillos import open_movies_page
+from . import __version__
+from .exceptions import InvalidConfigKeys, InvalidVideoID
 from .get_config import get_config
 from .media import Movie
 from .movie_args import get_movie_args
+from .render import compile_movies_page
 
 
 try:
@@ -19,50 +46,108 @@ except NameError:
     pass  # str is already Unicode in Python 3
 
 
-def main_logic():
-    """Display movie trailer page in a browser using data from config file.
+USAGE = __doc__.split('\n\n\n')[1]
+VERSION = 'Fresh Tomatillos ' + __version__
+DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
-    Raises:
-        ValueError: May be raised due to failed validation of the config
-            file during a call to one of the following internal functions:
-                - get_config()
-                - movie_args.get_args()
-    """
+
+def _module_path(path):
+    return os.path.join(DIRNAME, path)
+
+
+def print_err(message):
+    """Print Unicode string to stderr."""
+    print(str(message), file=sys.stderr)
+
+
+def main(argv=None):
+    """Display movie trailer page in a browser using data from config file."""
+    # Get command line arguments
+    if argv is None:
+        argv = sys.argv[1:]
+
+    # Did the user ask for help?
+    if any(arg in ('-h', '--help') for arg in argv):
+        print(VERSION + '\n\n' + USAGE)
+        return 0
+
+    # Did the user ask for the version?
+    if any(arg in ('-v', '--version') for arg in argv):
+        print(VERSION)
+        return 0
+
+    # Did the user pass to many arguments?
+    if len(argv) > 1:
+        print_err('Whoops, fresh_tomatillos only accepts 1 argument.\n')
+        print_err('USAGE INFO')
+        return 1
+
     # Load settings from the config file
+    config_path = argv[0] if argv else _module_path('sample.cfg')
     valid_config_keys = ('summary', 'poster', 'youtube')
-    config_file_path = os.path.join(os.path.dirname(__file__), 'test.cfg')
-    config = get_config(config_file_path, valid_config_keys)
+    try:
+        config = get_config(config_path, valid_config_keys)
+    except InvalidConfigKeys as e:
+        print_err(e.message)
+        return 1
+    except (IOError, OSError) as e:
+        if e.errno == errno.ENOENT:
+            print_err('The specified filename was not found: ' + e.filename)
+        elif e.errno == errno.EACCES:
+            print_err("You don't have read access to the file: " + e.filename)
+        elif e.errno == errno.EISDIR:
+            print_err('Expected a file, but found a directory: ' + e.filename)
+        else:
+            # TODO raise e instead, or optionally provide the stack trace
+            print_err(e)
+        return 1
 
     # Compile our list of Movie instances
-    movies = [Movie(*get_movie_args(config, title))
-              for title in config.sections()]
+    try:
+        movies = [Movie(*get_movie_args(config, title))
+                  for title in config.sections()]
+    except InvalidVideoID as e:
+        print_err(e.message)
+        return 1
 
     # Uncomment this line for repr output
     # print(repr(movies))
 
-    print('Opening webpage for:')
+    # Get HTML for the movies page
+    try:
+        page_content = compile_movies_page(movies)
+    except (IOError, OSError) as e:
+        if e.errno == errno.ENOENT:
+            print_err('Unable to find template file: ' + e.filename)
+        elif e.errno == errno.EACCES:
+            print_err("Insufficient permissions to read template file: " +
+                      e.filename)
+        elif e.errno == errno.EISDIR:
+            print_err('Expected a template file, but found a directory: ' +
+                      e.filename)
+        else:
+            # TODO raise e instead, or optionally provide the stack trace
+            print_err(e)
+        return 1
 
+    # Save HTML string to disk
+    # For now, always create the file in our package directory so we don't
+    # take the chance of overwriting the user's files
+    output_path = _module_path('fresh_tomatillos.html')
+    try:
+        with io.open(output_path, 'w', encoding='utf-8') as output_file:
+            output_file.write(page_content)
+    except (IOError, OSError) as e:
+        if e.errno == errno.EACCES:
+            print_err("Fresh Tomatillos couldn't write the output file: " +
+                      e.filename)
+        # TODO raise e or optionally provide the stack trace
+        print_err(e)
+        return 1
+
+    # Open the output file in the browser (in a new tab, if possible)
+    print('Opening webpage for:')
     for movie in movies:
         print(str(movie))
-
-    open_movies_page(movies)
-
-
-# Separate function so that we can handle all internal errors at once
-def main():
-    """Display movie trailer page in a browser using data from config file.
-
-    Catch errors inheriting from package-specific ConfigError and print
-    their error messages out to the console before exiting.  This creates a
-    better user experience when run as a CLI, while still providing feedback
-    on the user's mistake when creating the config file.
-    """
-    try:
-        main_logic()
-    except ConfigError as e:
-        print(e.message, file=sys.stderr)
-        sys.exit(1)
-
-
-if __name__ == '__main__':
-    main()
+    webbrowser.open_new_tab('file://' + output_path)
+    return 0

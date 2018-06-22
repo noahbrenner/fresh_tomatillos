@@ -1,8 +1,10 @@
 from setuptools import setup
 
+from fresh_tomatillos import __version__
+
 setup(
     name='fresh_tomatillos',
-    version='0.1.0',
+    version=__version__,
     zip_safe=False,
     packages=['fresh_tomatillos'],
     package_data={'': ['templates/*', 'static/*']},

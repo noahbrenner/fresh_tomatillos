@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-import webbrowser
 import io
 import os
 
@@ -29,8 +28,8 @@ def _create_movie_tiles(movies, tile_template):
     return '\n'.join(tile_template.format(movie=movie) for movie in movies)
 
 
-def open_movies_page(movies):
-    """Generate an HTML movies page and open it in a web browser."""
+def compile_movies_page(movies):
+    """Return generated HTML for movies page."""
     # Get template and static content.  Each template has `{variable}`
     # sections meant to be used with `str.format()`.
     main_page = _read_file('templates/main_page.html')
@@ -44,12 +43,4 @@ def open_movies_page(movies):
         scripts=scripts,
         styles=styles)
 
-    # Get the full path of where we'll save the rendered content
-    output_path = os.path.join(MODULE_DIR, 'fresh_tomatillos.html')
-
-    # Output the file, overwriting it if one already exists
-    with io.open(output_path, 'w', encoding='utf-8') as output_file:
-        output_file.write(rendered_content)
-
-    # Open the output file in the browser (in a new tab, if possible)
-    webbrowser.open_new_tab('file://' + output_path)
+    return rendered_content
