@@ -1,2 +1,4 @@
-*.pyc
+__pycache__/
+*.egg-info/
+*.py[cod]
 fresh_tomatillos.html

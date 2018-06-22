@@ -2,14 +2,12 @@
 
 from __future__ import unicode_literals, with_statement
 import io
-
-# Use RawConfigParser so that interpolation is not performed when reading data
 try:
     from configparser import RawConfigParser  # Python 3
 except ImportError:
     from ConfigParser import RawConfigParser  # Python 2
 
-from exception import InvalidConfigKeys
+from .exceptions import InvalidConfigKeys
 
 
 def _movie_key_frozensets(config):

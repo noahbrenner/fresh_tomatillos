@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals
 import string
-
 try:
     # Python 3
     from urllib.parse import urlsplit, parse_qs
@@ -10,7 +9,7 @@ except ImportError:
     # Python 2
     from urlparse import urlsplit, parse_qs
 
-from exception import InvalidVideoID
+from .exceptions import InvalidVideoID
 
 
 YOUTUBE_ID_CHARACTERS = frozenset(string.ascii_letters + string.digits + '-_')
@@ -113,7 +112,7 @@ def _get_youtube_id(youtube_source, title):
     return youtube_id
 
 
-def get_args(config, title):
+def get_movie_args(config, title):
     """Create a list of arguments to pass to the Movie constructor.
 
     Args:

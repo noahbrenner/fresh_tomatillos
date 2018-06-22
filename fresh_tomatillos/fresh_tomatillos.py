@@ -3,11 +3,23 @@
 from __future__ import unicode_literals
 import webbrowser
 import io
-from os import path
+import os
 
 
-def _read_file(path):
-    """Return the contents of a file as a Unicode string."""
+MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def _read_file(relative_path):
+    """Return the contents of a file as a Unicode string.
+
+    Args:
+        relative_path: Path to the file, relative to this module.
+
+    Returns:
+        Contents of the file as a string.
+    """
+    path = os.path.normpath(os.path.join(MODULE_DIR, relative_path))
+
     with io.open(path, 'r', encoding='utf-8') as input_file:
         return input_file.read()
 
@@ -19,14 +31,12 @@ def _create_movie_tiles(movies, tile_template):
 
 def open_movies_page(movies):
     """Generate an HTML movies page and open it in a web browser."""
-    # Get the content of our HTML templates.  Each one has `{variable}`
+    # Get template and static content.  Each template has `{variable}`
     # sections meant to be used with `str.format()`.
-    main_page = _read_file('template.html')     # Page layout and title bar
-    movie_tile = _read_file('movie_tile.html')  # Single movie tile
-
-    # Get static content to be added to our template
-    scripts = _read_file('scripts.js')
-    styles = _read_file('styles.css')
+    main_page = _read_file('templates/main_page.html')
+    movie_tile = _read_file('templates/movie_tile.html')
+    scripts = _read_file('static/scripts.js')
+    styles = _read_file('static/styles.css')
 
     # Compile the full movies page, including movie tiles
     rendered_content = main_page.format(
@@ -35,7 +45,7 @@ def open_movies_page(movies):
         styles=styles)
 
     # Get the full path of where we'll save the rendered content
-    output_path = path.abspath('fresh_tomatillos.html')
+    output_path = os.path.join(MODULE_DIR, 'fresh_tomatillos.html')
 
     # Output the file, overwriting it if one already exists
     with io.open(output_path, 'w', encoding='utf-8') as output_file:

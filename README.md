@@ -3,7 +3,7 @@ Fresh Tomatillos
 
 > Generate a single-page website to display your favorite movies' trailers
 
-Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies on the page, including descriptions, poster images, and trailers (YouTube videos).
+Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies on the generated page, including descriptions, poster images, and trailers (YouTube videos). From that page, you can click on any poster to play the trailer for it.
 
 Fresh Tomatillos comes with a sample list of movies so that you can test it out right away. To customize the list of movies, see the [Config File](#config-file) section of this README.
 
@@ -14,34 +14,44 @@ Setup
 
 ### 1. Make sure Python is installed
 
-Fresh Tomatillos requires a Python interpreter to be installed in order to run. Both **Python 2** and **Python 3** are supported, though version 3 is recommended. Python 2.6.0 is the minimum compatible version.
+In order to run Fresh Tomatillos, you will need a Python interpreter installed on your computer. Both **Python 2** and **Python 3** are supported (I recommend Python 3). Python versions of at least 2.7 or 3.3 should work fine. Some earlier versions may also work, but they are not tested.
 
-If you're running Linux or Mac, you likely already have a version of Python installed. You can check the version from a terminal by running:
+If you're running Linux or Mac, you probably have a version of Python already installed. You can check the version from a terminal by running:
 
 ```bash
 python --version
 ```
 
-If you do not already have Python installed, you can get a copy from <https://www.python.org/downloads/>.
+* If you do not yet have Python installed, you can get a copy from <https://www.python.org/downloads>.
 
-Alternatively, you can install Python using a package manager, if you have one, for example:
+* Alternatively, you can install Python using a package manager, if you have one, for example:
+
+  ```bash
+  # Using Chocolatey on Windows
+  choco install python3
+
+  # Using Homebrew on Mac
+  brew install python
+
+  # Using apt on Linux
+  sudo apt install python3
+  ```
+
+  There are plenty of other package managers for Linux as well, but if you're running Linux, you're probably comfortable with the process for using your preferred one. If you run into problems, feel free to open an issue!
+
+### 2. Install Fresh Tomatillos
+
+#### Option 1: `pip`
+
+Run this command in your terminal to install using Python's built-in package manager, `pip`:
 
 ```bash
-# Using Chocolatey on Windows
-choco install python3
-
-# Using Homebrew on Mac
-brew install python
-
-# Using apt on Linux
-sudo apt install python3
+pip install --user git+https://github.com/noahbrenner/fresh_tomatillos.git@master#egg=fresh_tomatillos
 ```
 
-There are other package managers for Linux as well, but if you're running Linux, you're probably comfortable working with them. If you run into problems, though, feel free to open an issue!
+You can also include the `-e` (editable) flag in that command if you'd like to be able to make local changes to the source code and have those changes reflected immediately when you run the program again.
 
-### 2. Download Fresh Tomatillos
-
-#### Option 1
+#### Option 2: `git clone`
 
 Clone this repo by running the following in your terminal:
 
@@ -49,32 +59,38 @@ Clone this repo by running the following in your terminal:
 git clone https://github.com/noahbrenner/fresh_tomatillos.git
 ```
 
-#### Option 2
+Then install using `pip`. I recommend using the `-e` flag so that your installation will reflect any changes you make to the code without reinstalling, but you can leave that flag out if you just want a regular installation. Don't forget the `.` at the end of the `pip` command (specify the current directory):
 
-Download the [zip file][download] and extract the contents.
+```bash
+cd fresh_tomatillos
+pip install --user -e .
+```
 
 Usage
 -----
 
-First, open up your terminal and switch to the directory where you cloned or unzipped the Fresh Tomatillo code:
+### Standard Usage
+
+Using the sample config file is as simple as running this in your terminal:
+
+```bash
+fresh_tomatillos
+```
+
+### Running From a Git Clone
+
+If you cloned the repo, you also have the option of running Fresh Tomatillos from the repo directory. Make sure your working directory is at the top level of the repo first:
 
 ```bash
 cd path/to/fresh_tomatillos
 ```
 
-Then run the `entertainment_center.py` file using Python:
+Then run the program using Python explicitly:
 
 ```bash
-python entertainment_center.py
+python3 -m fresh_tomatillos
+# to run in Python 2 instead, replace `python3` with `python`
 ```
-
-Or if your Python executable is called `python3`, you can run this instead:
-
-```bash
-python3 entertainment_center.py
-```
-
-Running these commands will generate a file called `fresh_tomatillos.html` in the same directory and display the page in your default browser. In the browser, you can see the poster image and name of each movie. You can click on any poster to play the trailer for it without leaving that webpage (unless you've disabled JavaScript in your browser).
 
 Config File
 -----------
@@ -137,7 +153,7 @@ This line starts with `youtube:` and is followed by either a YouTube video ID or
 
 ### Other Config-related Details
 
-* After making a change to the config file, you'll need to run the `entertainment_center.py` again to generate a new HTML file.
+* After making a change to the config file, you'll need to run `fresh_tomatillos` again to generate a new HTML file.
 
 * The config file must be saved using [UTF-8 encoding][utf-8], which any decent text editor should be able to do. This allows you to use just about any Unicode character in the config file (é ñ א).
 
@@ -192,15 +208,16 @@ This line starts with `youtube:` and is followed by either a YouTube video ID or
 * All *values* are case sensitive, but keys are not.
 
     ```ini
-    # Equivalent (capitalization of keys doesn't matter)
+    # Equivalent (and valid, though weird) - Capitalization of keys doesn't matter
     summary: A thing happens!
     SuMmArY: A thing happens!
 
-    # Not equivalent (capitalization of values is respected)
+    # NOT Equivalent - Capitalization of values is respected
+    # The last entery would apply (lowercase version)
     summary: A THING HAPPENS!
     summary: a thing happens!
 
-    # Also not equivalent (capitalization of movie titles is respected)
+    # NOT Equivalent - Capitalization of movie titles is respected
     # These would be two separate movie entries
     [My Awesome Movie]
     [mY aWeSoMe MoViE]
@@ -236,7 +253,6 @@ To Do
 * Validate YouTube video ID
 * Validate image URLs (no 404) (Check if it's an image format?)
 * README: The user must have an active internet connection to verify and display images and YouTube videos
-* Change directory structure (lib, build)
 * GitHub Pages example
 * HTML responsive design
 * JavaScript adjustments

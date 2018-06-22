@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function, unicode_literals
+import os
 import sys
 
-from exception import ConfigError
-from fresh_tomatillos import open_movies_page
-from get_config import get_config
-from media import Movie
-import movie_args
+from .exceptions import ConfigError
+from .fresh_tomatillos import open_movies_page
+from .get_config import get_config
+from .media import Movie
+from .movie_args import get_movie_args
 
 
 try:
@@ -18,7 +19,7 @@ except NameError:
     pass  # str is already Unicode in Python 3
 
 
-def main():
+def main_logic():
     """Display movie trailer page in a browser using data from config file.
 
     Raises:
@@ -29,10 +30,11 @@ def main():
     """
     # Load settings from the config file
     valid_config_keys = ('summary', 'poster', 'youtube')
-    config = get_config('test.cfg', valid_config_keys)
+    config_file_path = os.path.join(os.path.dirname(__file__), 'test.cfg')
+    config = get_config(config_file_path, valid_config_keys)
 
     # Compile our list of Movie instances
-    movies = [Movie(*movie_args.get_args(config, title))
+    movies = [Movie(*get_movie_args(config, title))
               for title in config.sections()]
 
     # Uncomment this line for repr output
@@ -46,9 +48,21 @@ def main():
     open_movies_page(movies)
 
 
-if __name__ == '__main__':
+# Separate function so that we can handle all internal errors at once
+def main():
+    """Display movie trailer page in a browser using data from config file.
+
+    Catch errors inheriting from package-specific ConfigError and print
+    their error messages out to the console before exiting.  This creates a
+    better user experience when run as a CLI, while still providing feedback
+    on the user's mistake when creating the config file.
+    """
     try:
-        main()
+        main_logic()
     except ConfigError as e:
         print(e.message, file=sys.stderr)
         sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
