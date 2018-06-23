@@ -112,8 +112,8 @@ def _get_youtube_id(youtube_source, title):
     return youtube_id
 
 
-def get_movie_args(config, title):
-    """Create a list of arguments to pass to the Movie constructor.
+def generate_movie_args(config):
+    """Return a generator, yielding arguments to pass to the Movie constructor.
 
     Args:
         config: A config instance containing the following keys in the
@@ -133,12 +133,15 @@ def get_movie_args(config, title):
             not valid as either a  YouTube video ID or a YouTube URL.
             (raised in a call to _get_youtube_id())
     """
-    def get_key(key):
-        """Look up `key` in config for the current movie title."""
-        return config.get(title, key)
+    def lookup_function(title):
+        """Create a function for looking up keys in the `title` config section.
+        """
+        return lambda key: config.get(title, key)
 
-    return (title,
-            get_key('summary'),
-            get_key('poster'),
-            # Exceptions raised by _get_youtube_id() are not caught here
-            _get_youtube_id(get_key('youtube'), title))
+    for title in config.sections():
+        get_key = lookup_function(title)
+        yield (title,
+               get_key('summary'),
+               get_key('poster'),
+               # Exceptions raised by _get_youtube_id() are not caught here
+               _get_youtube_id(get_key('youtube'), title))

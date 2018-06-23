@@ -35,7 +35,7 @@ from . import __version__
 from .exceptions import InvalidConfigKeys, InvalidVideoID
 from .get_config import get_config
 from .media import Movie
-from .movie_args import get_movie_args
+from .movie_args import generate_movie_args
 from .render import compile_movies_page
 
 
@@ -104,13 +104,13 @@ def main(argv=None):
 
     # Compile our list of Movie instances
     try:
-        movies = [Movie(*get_movie_args(config, title))
-                  for title in config.sections()]
+        movies = [Movie(*args) for args in generate_movie_args(config)]
     except InvalidVideoID as e:
         print_err(e.message)
         return 1
 
     # Uncomment this line for repr output
+    # TODO add a command line option for this
     # print(repr(movies))
 
     # Get HTML for the movies page

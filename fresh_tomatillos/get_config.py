@@ -53,9 +53,6 @@ def _verified_config(config, valid_keys):
         InvalidConfigKeys: Raised if there are missing or extra option keys
             for any movie section in `config`.
     """
-    if not isinstance(valid_keys, (set, frozenset)):
-        valid_keys = frozenset(valid_keys)
-
     # Collect a list of errors, if any, grouped by config section
     # Results in: ((movie_title, missing_keys, extra_keys), ...)
     errors = tuple((movie_title, valid_keys - keys, keys - valid_keys)
@@ -96,4 +93,4 @@ def get_config(file_path, valid_keys):
         config.readfp(config_file)
 
     # Exceptions raised by _verified_config() are not caught here
-    return _verified_config(config, valid_keys)
+    return _verified_config(config, frozenset(valid_keys))
