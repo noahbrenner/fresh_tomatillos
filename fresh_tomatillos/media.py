@@ -1,21 +1,37 @@
 # -*- coding: utf-8 -*-
+"""
+fresh_tomatillos.media
+~~~~~~~~~~~~~~~~~~~~~~
+
+Defines the Movie class at the heart of fresh_tomatillos.
+"""
 
 from __future__ import unicode_literals
 
 
 class Movie(object):
-    """Class for representing information about a movie.
+    """Class for representing movie data.
 
-    Attributes (all attributes are strings):
-        title: The title of the movie.
+    Constructor Args:
+        title (str): The title of the movie.
 
-        summary: A brief summary of the movie's plot.
+        summary (str): A brief summary of the movie's plot.
 
-        poster_url: A URL pointing to an image file of the movie's poster.
+        poster_url (str): The URL of an image file of the movie's poster.
 
-        youtube_id: A YouTube video ID for the movie's trailer.
+        youtube_id (str): A YouTube video ID for the movie's trailer.
 
-        youtube_url: Full YouTube URL for the movie's trailer. (read only)
+    Instance Attributes:
+        title (str): The title of the movie.
+
+        summary (str): A brief summary of the movie's plot.
+
+        poster_url (str): The URL of an image file of the movie's poster.
+
+        youtube_id (str): A YouTube video ID for the movie's trailer.
+
+        youtube_url (str): The full YouTube URL for the movie's trailer.
+            (read only)
     """
 
     __slots__ = ['title', 'summary', 'poster_url', 'youtube_id']
@@ -38,7 +54,7 @@ class Movie(object):
         self.youtube_id = youtube_id
 
     def __repr__(self):
-        """Return a string capable of reproducing a Movie instance."""
+        """Return a string `s` such that `Movie(s)` replicates the instance."""
         return self.__repr_template.format(self=self)
 
     def __str__(self):

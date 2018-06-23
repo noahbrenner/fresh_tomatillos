@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
 """
+fresh_tomatillos.cli
+~~~~~~~~~~~~~~~~~~~~
+
 Implements the command-line interface for fresh_tomatillos.
 
 
@@ -52,16 +54,35 @@ DIRNAME = os.path.dirname(os.path.abspath(__file__))
 
 
 def _module_path(path):
+    """Return the full path for a path specified relative to this directory.
+
+    Args:
+        path (str): The relative path from the directory containing cli.py.
+
+    Returns:
+        str: The absolute path equivalent to `path`.
+    """
     return os.path.join(DIRNAME, path)
 
 
 def print_err(message):
-    """Print Unicode string to stderr."""
+    """Print a Unicode string to stderr, even in Python 2.
+
+    Args:
+        message (str): The string to print to stderr.
+    """
     print(str(message), file=sys.stderr)
 
 
 def main(argv=None):
-    """Display movie trailer page in a browser using data from config file."""
+    """Display movie trailer page in a browser using data from config file.
+
+    Args:
+        argv (list): An optional list to use in place of `sys.argv[1:]`.
+
+    Returns:
+        int: A return code, 0 or 1, to pass to `sys.exit()`.
+    """
     # Get command line arguments
     if argv is None:
         argv = sys.argv[1:]

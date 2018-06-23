@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+"""
+fresh_tomatillos.exceptions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Defines the exception classes specific to fresh_tomatillos.
+
+Base Exceptions (not to be used directly):
+    Error
+    ConfigError
+
+Exceptions For Direct Use:
+    InvalidConfigKeys
+    InvalidVideoID
+"""
 
 from __future__ import unicode_literals
 
@@ -6,8 +20,9 @@ from __future__ import unicode_literals
 class Error(Exception):
     """Base exception for Fresh Tomatillos.
 
-    Other exceptions should inherit from Error, but Error should not be
-    thrown directly.
+    Error does not provide any functionality aside from being a base class,
+    enabling developers to catch only those exceptions explicitly raised by
+    Fresh Tomatillos.
     """
 
     pass
@@ -16,17 +31,16 @@ class Error(Exception):
 class ConfigError(Error, ValueError):
     """Base exception for errors in a user-created config file.
 
-    Other exceptions should inherit from ConfigError, but ConfigError should
-    not be thrown directly.
+    Constructor Args:
+        message (str): The Error message to append to ConfigError's header.
 
-    ConfigError provides a heading in the `self.message` string, which child
-    classes should include by running ConfigError's `__init__` method and
-    then append their own messages to the `self.message` string:
+    ConfigError provides a heading in an instance's `self.message` string.
+    In order to include this header, child classes must pass their own added
+    messages to ConfigError's `__init__` method.  See example below:
 
         class ChildError(ConfigError):
             def __init__(self, message_arg):
-                super(ChildError, self).__init__()
-                self.message += message_arg
+                super(ChildError, self).__init__(message_arg)
     """
 
     def __init__(self, message):
@@ -41,23 +55,20 @@ class ConfigError(Error, ValueError):
 
 
 class InvalidConfigKeys(ConfigError):
-    """Invalid key in at least one [movie] section of current config file.
+    """Invalid key in at least one "[movie]" section of current config file.
 
-    Constructor Arg:
-        An iterable of tuples.  Each tuple contained in the iterable
-        describes a single movie which has at least one error in the names
-        of its config keys.  Every tuple has the form:
+    Constructor Args:
+        movie_errors (Iterable[tuple]): Each tuple contained in this
+            iterable describes a single movie.  Every movie included has at
+            least one error in the names of its config keys.  Every
+            contained tuple describing a movie has the form:
 
-                (title, missing_keys, extra_keys)
+                (<title>, <missing_keys>, <extra_keys>)
 
-            Values in each tuple:
-                title: A string - the title of the movie.
-
-                missing_keys: An iterable (usually a frozenset) containing
-                    any missing config keys (as strings).  May be empty.
-
-                extra_keys: An iterable (usually a frozenset) containing
-                    any unexpected config keys (as strings).  May be empty.
+                Values in each tuple:
+                    str: The title of the movie.
+                    frozenset[str]: Missing config keys.
+                    frozenset[str]: Unexpected config keys.
     """
 
     __heading_template = '\nInvalid config settings for movie:  {title}'
@@ -84,7 +95,17 @@ class InvalidConfigKeys(ConfigError):
 
 
 class InvalidVideoID(ConfigError):
-    """Invalid YouTube video ID or URL (may be an error in URL formatting)."""
+    """Invalid YouTube video ID or URL (may be an error in URL formatting).
+
+    Constructor Args:
+        title (str): The title of the movie
+
+        video_source (str): The string provided by the end user to define a
+            YouTube video.  It could have been a video ID or a full URL.
+
+        source_type (str): The type(s) of data contained in `video_source`
+            such as 'ID or URL' or 'URL'.
+    """
 
     __message_template = (
         '\nInvalid YouTube {self.source_type} for movie:  {self.title}'

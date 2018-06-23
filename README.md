@@ -1,7 +1,7 @@
 Fresh Tomatillos
 ================
 
-> Create a single-page website to display your favorite movies' trailers
+> Generate a webpage displaying posters and trailers for your favorite movies.
 
 Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies on the generated page, including descriptions, poster images, and trailers (YouTube videos). From that page, you can click on any poster to play the trailer for it.
 

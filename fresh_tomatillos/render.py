@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+"""
+fresh_tomatillos.render
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Provides `compile_movies_page()` to render a movie trailer webpage.
+"""
 
 from __future__ import unicode_literals
 import io
@@ -12,10 +18,10 @@ def _read_file(relative_path):
     """Return the contents of a file as a Unicode string.
 
     Args:
-        relative_path: Path to the file, relative to this module.
+        relative_path (str): The path to the file, relative to this module.
 
     Returns:
-        Contents of the file as a string.
+        str: The contents of the file.
     """
     path = os.path.normpath(os.path.join(MODULE_DIR, relative_path))
 
@@ -24,12 +30,30 @@ def _read_file(relative_path):
 
 
 def _create_movie_tiles(movies, tile_template):
-    """Return a string containing unique HTML for each movie."""
+    """Return a string containing unique HTML for each movie.
+
+    Args:
+        movies (list[Movie]): The movies for which to render content.
+
+        tile_template (str): The template string to be used with
+            str.format() containing references in curly braces to
+            movie attributes such as "{movie.title}".
+
+    Returns:
+        str: The concatenation of all rendered movie tiles.
+    """
     return '\n'.join(tile_template.format(movie=movie) for movie in movies)
 
 
 def compile_movies_page(movies):
-    """Return generated HTML for movies page."""
+    """Return generated HTML for movies page.
+
+    Args:
+        movies (list[Movie]): The movies to include in the webpage.
+
+    Returns:
+        str: Rendered HTML for a movie trailer page.
+    """
     # Get template and static content.  Each template has `{variable}`
     # sections meant to be used with `str.format()`.
     main_page = _read_file('templates/main_page.html')

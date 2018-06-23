@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+"""
+fresh_tomatillos.get_config
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Implements the parsing and validating of user-created config files.
+"""
 
 from __future__ import unicode_literals, with_statement
 import io
@@ -11,16 +17,15 @@ from .exceptions import InvalidConfigKeys
 
 
 def _movie_key_frozensets(config):
-    """Return a generator providing titles and frozensets of movie options.
+    """Return a generator which yields titles and movie options.
 
     Args:
-        config: An instance of ConfigParser.
+        config (ConfigParser): The object from which to draw data.
 
     Yields:
-        tuples of (movie_title, movie_keys). Details of tuple contents:
-            movie_title: A string - one of the sections in `config`.
-
-            movie_keys: A frozenset - the option keys in `movie_title`.
+        tuple[str, frozenset]: Each tuple contains:
+            (str): A movie title (a section in `config`).
+            (frozenset): The option keys in `config` for that movie.
     """
     for movie_title in config.sections():
         yield movie_title, frozenset(config.options(movie_title))
@@ -35,26 +40,25 @@ def _verified_config(config, valid_keys):
 
     Because `config` is an instance of ConfigParser, it will never have
     duplicate keys; ConfigParser simply overwrites the previous value if a
-    source file contains duplicate settings.  The same is true for top level
-    sections.  Because of this guarantee, sections of `config` are not
-    checked for duplicate values.
+    source file contains duplicate settings.  Top level sections are free
+    from duplication for the same reason.  Because of this guarantee,
+    sections of `config` are not checked for duplicate values.
 
     Args:
-        config: An instance of ConfigParser to validate.
+        config (ConfigParser): The configuration object to validate.
 
-        valid_keys: An iterable of valid keys for each movie in `config` to
-            contain.  This will be converted to frozenset if it is not
-            already a set or a frozenset.
+        valid_keys (frozenset): The valid data attributes which every movie
+            in `config` must contain.
 
     Returns:
-        The same ConfigParser instance that was passed in.
+        ConfigParser: The same object that was passed in as `config`.
 
     Raises:
         InvalidConfigKeys: Raised if there are missing or extra option keys
             for any movie section in `config`.
     """
-    # Collect a list of errors, if any, grouped by config section
-    # Results in: ((movie_title, missing_keys, extra_keys), ...)
+    # Collect the errors (if any), grouped by config section
+    # Results in: ((<str: movie_title>, <missing_keys>, <extra_keys>), ...)
     errors = tuple((movie_title, valid_keys - keys, keys - valid_keys)
                    for movie_title, keys in _movie_key_frozensets(config)
                    if not valid_keys == keys)
@@ -73,17 +77,17 @@ def get_config(file_path, valid_keys):
     additional keys.  The *values* in each section are not verified.
 
     Args:
-        file_path: The path to the configuration file.
+        file_path (str): The path to the configuration file.
 
-        valid_keys: An iterable containing the keys which will be considered
-            valid for each movie that is defined.
+        valid_keys (Iterable[str]): The valid data attributes which must be
+            included for each movie of the config file.
 
     Returns:
         An instance of ConfigParser.
 
     Raises:
-        InvalidConfigKeys: Raised if there are missing or extra option keys
-            for any movie section in `config`.
+        InvalidConfigKeys: Raised if there are missing or extra data
+            attributes for any movie defined in the config file.
             (raised in a call to _verified_config())
     """
     config = RawConfigParser()
