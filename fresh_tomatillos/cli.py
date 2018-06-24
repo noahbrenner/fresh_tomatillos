@@ -33,12 +33,12 @@ import os
 import sys
 import webbrowser
 
-from . import __version__
-from .exceptions import InvalidConfigKeys, InvalidVideoID
-from .get_config import get_config
-from .media import Movie
-from .movie_args import generate_movie_args
-from .render import compile_movies_page
+from fresh_tomatillos import __version__
+from fresh_tomatillos.exceptions import InvalidConfigKeys, InvalidVideoID
+from fresh_tomatillos.get_config import get_config
+from fresh_tomatillos.media import Movie
+from fresh_tomatillos.movie_args import generate_movie_args
+from fresh_tomatillos.render import compile_movies_page
 
 
 try:

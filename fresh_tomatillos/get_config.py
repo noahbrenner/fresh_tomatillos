@@ -13,7 +13,7 @@ try:
 except ImportError:
     from ConfigParser import RawConfigParser  # Python 2
 
-from .exceptions import InvalidConfigKeys
+from fresh_tomatillos.exceptions import InvalidConfigKeys
 
 
 def _movie_key_frozensets(config):

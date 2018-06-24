@@ -10,7 +10,7 @@ Generate a webpage displaying posters and trailers for your favorite movies.
 import os
 import sys
 
-from .cli import main
+from fresh_tomatillos.cli import main
 
 if __name__ == '__main__':
     main()

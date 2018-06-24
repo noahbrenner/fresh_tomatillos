@@ -18,7 +18,7 @@ except ImportError:
     # Python 2
     from urlparse import urlsplit, parse_qs
 
-from .exceptions import InvalidVideoID
+from fresh_tomatillos.exceptions import InvalidVideoID
 
 
 YOUTUBE_ID_CHARACTERS = frozenset(string.ascii_letters + string.digits + '-_')
