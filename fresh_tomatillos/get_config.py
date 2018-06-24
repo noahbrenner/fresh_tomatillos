@@ -24,6 +24,7 @@ def _movie_key_frozensets(config):
 
     Yields:
         tuple[str, frozenset]: Each tuple contains:
+
             (str): A movie title (a section in `config`).
             (frozenset): The option keys in `config` for that movie.
     """
@@ -46,16 +47,15 @@ def _verified_config(config, valid_keys):
 
     Args:
         config (ConfigParser): The configuration object to validate.
-
         valid_keys (frozenset): The valid data attributes which every movie
-            in `config` must contain.
+                                in `config` must contain.
 
     Returns:
         ConfigParser: The same object that was passed in as `config`.
 
     Raises:
         InvalidConfigKeys: Raised if there are missing or extra option keys
-            for any movie section in `config`.
+                           for any movie section in `config`.
     """
     # Collect the errors (if any), grouped by config section
     # Results in: ((<str: movie_title>, <missing_keys>, <extra_keys>), ...)
@@ -78,17 +78,17 @@ def get_config(file_path, valid_keys):
 
     Args:
         file_path (str): The path to the configuration file.
-
         valid_keys (Iterable[str]): The valid data attributes which must be
-            included for each movie of the config file.
+                                    defined for every movie in the config
+                                    file.
 
     Returns:
-        An instance of ConfigParser.
+        ConfigParser: A config object containing data read from `file_path`.
 
     Raises:
         InvalidConfigKeys: Raised if there are missing or extra data
-            attributes for any movie defined in the config file.
-            (raised in a call to _verified_config())
+                           attributes for any movie defined in the config
+                           file.  (raised in a call to _verified_config())
     """
     config = RawConfigParser()
 

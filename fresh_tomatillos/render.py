@@ -34,10 +34,10 @@ def _create_movie_tiles(movies, tile_template):
 
     Args:
         movies (list[Movie]): The movies for which to render content.
-
         tile_template (str): The template string to be used with
-            str.format() containing references in curly braces to
-            movie attributes such as "{movie.title}".
+                             `str.format()`.  It should include references
+                             in curly braces to movie attributes, such as
+                             "{movie.title}".
 
     Returns:
         str: The concatenation of all rendered movie tiles.

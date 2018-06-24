@@ -70,12 +70,12 @@ def _get_youtube_id_from_url(url):
 
     Args:
         url (str): The URL to search for a YouTube video ID, which should:
-            - Specify a video (not a channel page, for example).
-            - Have a hostname that matches one of these options:
-                - www.youtube.com
-                - m.youtube.com
-                - youtube.com
-                - youtu.be
+                    - Specify a video (not a channel page, for example).
+                    - Have a hostname that matches one of these options:
+                        - www.youtube.com
+                        - m.youtube.com
+                        - youtube.com
+                        - youtu.be
 
     Returns:
         Optional[str]: A YouTube video ID if one was found, otherwise None.
@@ -112,15 +112,14 @@ def _get_youtube_id(youtube_source, title):
 
     Args:
         youtube_source (str): A YouTube video URL or a YouTube video ID.
-
         title (str): The movie title associated with `youtube_source`.
 
     Returns:
         str: A YouTube Video ID.
 
     Raises:
-        InvalidVideoID: Raised if `id_string` is neither a valid
-            YouTube video ID nor a valid YouTube URL.
+        InvalidVideoID: Raised if `id_string` is neither a valid YouTube
+                        video ID nor a valid YouTube URL.
     """
     # Return early if youtube_source already looks like an ID
     if _is_potential_youtube_id(youtube_source):
@@ -141,37 +140,38 @@ def generate_movie_args(config):
     """Return a generator, yielding arguments to pass to the Movie constructor.
 
     Args:
-        config (ConfigParser): Every section in `config` is assumed
-            to have string values for all of the following keys
-                - summary
-                - poster
-                - youtube
+        config (ConfigParser): Every section in `config` is assumed to have
+                               string values for all of the following keys:
+                                - summary
+                                - poster
+                                - youtube
 
     Yields:
         tuple[str, str, str, str]: Each yielded tuple has this form:
-            (<title>, <summary>, <poster_url>, <video_id>)
 
-            Values in each tuple:
-                str: A movie title.
-                str: A summary of the movie's plot.
-                str: The URL of an image file of the movie's poster.
-                str: A YouTube video ID for the movie's trailer.
+                (<title>, <summary>, <poster_url>, <video_id>)
+
+                Values in each tuple:
+                    str: A movie title.
+                    str: A summary of the movie's plot.
+                    str: The URL of an image file of the movie's poster.
+                    str: A YouTube video ID for the movie's trailer.
 
     Raises:
         InvalidVideoID: Raised if the 'youtube' key for any movie in
-            `config` is not valid as a YouTube video ID or as a YouTube URL.
-            (raised in a call to _get_youtube_id())
+                        `config` is not valid as a YouTube video ID or URL.
+                        (raised in a call to _get_youtube_id())
     """
     def lookup_function(title):
         """Create a function for looking up keys in the `title` config section.
 
         Args:
             title: (str): The section of `config` in which the returned
-                function will look up values by key.
+                          function will look up values by key.
 
         Returns:
-            Callable[str] -> str: A lookup function specific to the `title`
-                section of `config`.
+            Callable[str] -> str: A function to look up values by key, specific
+                                  to the `title` section of `config`.
         """
         return lambda key: config.get(title, key)
 

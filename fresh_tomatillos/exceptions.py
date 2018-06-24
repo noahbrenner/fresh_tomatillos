@@ -98,10 +98,10 @@ class InvalidVideoID(ConfigError):
     """Invalid YouTube video ID or URL (may be an error in URL formatting).
 
     Constructor Args:
-        title (str): The title of the movie
-
+        title (str): The title of the movie.
         video_source (str): The string provided by the end user to define a
-            YouTube video.  It could have been a video ID or a full URL.
+                            YouTube video.  It could have been a video ID or
+                            a full URL.
 
         source_type (str): The type(s) of data contained in `video_source`
             such as 'ID or URL' or 'URL'.

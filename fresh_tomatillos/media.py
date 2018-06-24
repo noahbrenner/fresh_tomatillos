@@ -14,24 +14,17 @@ class Movie(object):
 
     Constructor Args:
         title (str): The title of the movie.
-
         summary (str): A brief summary of the movie's plot.
-
         poster_url (str): The URL of an image file of the movie's poster.
-
         youtube_id (str): A YouTube video ID for the movie's trailer.
 
     Instance Attributes:
         title (str): The title of the movie.
-
         summary (str): A brief summary of the movie's plot.
-
         poster_url (str): The URL of an image file of the movie's poster.
-
         youtube_id (str): A YouTube video ID for the movie's trailer.
-
         youtube_url (str): The full YouTube URL for the movie's trailer.
-            (read only)
+                           (read only)
     """
 
     __slots__ = ['title', 'summary', 'poster_url', 'youtube_id']
