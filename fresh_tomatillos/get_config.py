@@ -90,7 +90,12 @@ def get_config(file_path, valid_keys):
                            attributes for any movie defined in the config
                            file.  (raised in a call to _verified_config())
     """
-    config = RawConfigParser()
+    try:
+        # Not strict: Allow duplicate config entries to overwrite old values
+        config = RawConfigParser(strict=False)
+    except TypeError:
+        # Python 2 doesn't accept `strict` parameter, but is already not strict
+        config = RawConfigParser()
 
     # Use io.open so we can specify UTF-8 and handle non-ASCII data in Python 2
     with io.open(file_path, 'r', encoding='utf-8') as config_file:
