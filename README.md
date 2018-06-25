@@ -275,6 +275,9 @@ About
 
 This project was built starting from Udacity's [ud036_StarterCode][udacity-repo] repo, though almost all of the code in Fresh Tomatillos is new or has been modified from that template.
 
+I got a lot of inspiration for Python project structure by modeling off of [grip][]. Grip was also immensely helpful when editing this very README, since it shows you how your markdown files will be rendered on GitHub without having to commit/push/reload for every change.
+
+[grip]: https://github.com/joeyespo/grip
 [one-sheet]: https://en.wikipedia.org/wiki/One_sheet
 [sample-config]: /fresh_tomatillos/sample.cfg
 [sample-page]: https://noahbrenner.github.io/fresh_tomatillos/
