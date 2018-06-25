@@ -3,11 +3,14 @@ Fresh Tomatillos
 
 > Generate a webpage displaying posters and trailers for your favorite movies.
 
-Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies shown, including their descriptions, poster images, and trailers (YouTube videos).
+Fresh Tomatillos will generate a webpage to display movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies shown, including their descriptions, poster images, and trailers (YouTube videos).
+
+* View [sample config file][sample-config]
+* View [rendered sample page][sample-page] ([source][sample-page-source])
 
 From the generated webpage, you can click on any poster to play the movie's trailer. If you disable JavaScript or open the page in an old browser (IE 9 and older), the YouTube video will instead be be opened in a new tab (of course, you'll still need JavaScript enabled on *YouTube* in order to watch the video there).
 
-Fresh Tomatillos comes with a sample list of movies so that you can test it out right away. To customize the list of movies, see the [Config File](#config-file) section of this README.
+To make your own set of movies, instead of using the sample list, see the [Config File](#config-file) section below.
 
 To make good use of this program, you must have an active internet connection, since images and YouTube videos will not be displayed otherwise. Even without an internet connection, you can run the program to generate the webpage source file, you'll just need to view the result later when you *do* have internet access.
 
@@ -273,6 +276,9 @@ About
 This project was built starting from Udacity's [ud036_StarterCode][udacity-repo] repo, though almost all of the code in Fresh Tomatillos is new or has been modified from that template.
 
 [one-sheet]: https://en.wikipedia.org/wiki/One_sheet
+[sample-config]: /fresh_tomatillos/sample.cfg
+[sample-page]: https://noahbrenner.github.io/fresh_tomatillos/
+[sample-page-source]: /../../blob/gh-pages/index.html
 [udacity-repo]: https://github.com/udacity/ud036_StarterCode
 [utf-8]: https://en.wikipedia.org/wiki/UTF-8
 
@@ -282,4 +288,3 @@ To Do
 * Validate YouTube video ID
 * Validate image URLs (no 404) (Check if it's an image format?)
 * README: The user must have an active internet connection to verify images and YouTube videos
-* GitHub Pages example
