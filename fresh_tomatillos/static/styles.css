@@ -1,5 +1,9 @@
 body {
   padding-top: 80px;
+  color: #445;
+}
+.navbar {
+  background: #006;
 }
 #trailer .modal-dialog {
   margin-top: 200px;
