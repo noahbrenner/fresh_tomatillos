@@ -1,3 +1,5 @@
+// Disable video links - JavaScript is enabled, so we'll show embedded videos
+$('.movie-tile a').removeAttr('href');
 // Pause the video when the modal is closed
 $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
     // Remove the src so the player itself gets removed, as this is the only

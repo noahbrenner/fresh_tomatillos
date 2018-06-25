@@ -3,7 +3,9 @@ Fresh Tomatillos
 
 > Generate a webpage displaying posters and trailers for your favorite movies.
 
-Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies on the generated page, including descriptions, poster images, and trailers (YouTube videos). From that page, you can click on any poster to play the trailer for it.
+Fresh Tomatillos will generate a webpage displaying movie posters and trailers, then automatically open the page in your default browser. It is easy to customize the set of movies shown, including their descriptions, poster images, and trailers (YouTube videos).
+
+From the generated webpage, you can click on any poster to play the movie's trailer. If you disable JavaScript in your browser for the movies page, the YouTube video will instead be be opened in a new tab (of course, you'll still need JavaScript enabled on *YouTube* in order to watch the video there).
 
 Fresh Tomatillos comes with a sample list of movies so that you can test it out right away. To customize the list of movies, see the [Config File](#config-file) section of this README.
 
@@ -282,4 +284,3 @@ To Do
 * README: The user must have an active internet connection to verify images and YouTube videos
 * GitHub Pages example
 * HTML responsive design
-* JavaScript adjustments
