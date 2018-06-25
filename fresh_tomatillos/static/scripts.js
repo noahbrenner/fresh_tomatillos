@@ -1,6 +1,6 @@
 // Animate in the movie tiles
 $('.movie-tile').hide().first().show('fast', function showNext() {
-    $(this).next('div').show('fast', showNext);
+    $(this).next('article').show('fast', showNext);
 });
 // Disable video links - JavaScript is enabled, so we'll show embedded videos
 $('.movie-tile a').removeAttr('href');
