@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Fresh Tomatoes!</title>
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <style>
+body {
+  padding-top: 80px;
+  color: #445;
+}
+.navbar {
+  background: #006;
+}
+#trailer .modal-dialog {
+  margin-top: 200px;
+  width: 640px;
+  height: 480px;
+}
+.hanging-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 9001;
+}
+#trailer-video {
+  width: 100%;
+  height: 100%;
+}
+.movie-tile {
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+.movie-tile:hover {
+  background-color: #EEE;
+  cursor: pointer;
+}
+.scale-media {
+  padding-bottom: 56.25%;
+  position: relative;
+}
+.scale-media iframe {
+  border: none;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: white;
+}
+
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <!-- Trailer Video Modal -->
+    <div class="modal" id="trailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <a href="#" class="hanging-close" data-dismiss="modal" aria-hidden="true">
+            <img alt="Close video" src="https://lh5.ggpht.com/v4-628SilF0HtHuHdu5EzxD7WRqOrrTIDi_MhEG6_qkNtUK5Wg7KPkofp_VJoF7RS2LhxwEFCO1ICHZlc-o_=s0#w=24&h=24"/>
+          </a>
+          <div class="scale-media" id="trailer-video-container">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Page Content -->
+    <header class="container">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Fresh Tomatillos</a>
+              <span class="navbar-text">Click on a poster to watch the movie's trailer!</span>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container">
+<article class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="HGKikqxxSdA" data-toggle="modal" data-target="#trailer">
+  <a href="https://www.youtube.com/watch?v=HGKikqxxSdA" target="_blank">
+    <img alt="" src="https://upload.wikimedia.org/wikipedia/en/8/87/StarWarsMoviePoster1977.jpg" width="220" height="342">
+  </a>
+  <h2>Star Wars: A New Hope</h2>
+  <p>An evil empire has all but taken over the galaxy and must be stopped.</p>
+</article>
+
+<article class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="4sj1MT05lAA" data-toggle="modal" data-target="#trailer">
+  <a href="https://www.youtube.com/watch?v=4sj1MT05lAA" target="_blank">
+    <img alt="" src="https://upload.wikimedia.org/wikipedia/en/3/3d/The_Lion_King_poster.jpg" width="220" height="342">
+  </a>
+  <h2>The Lion King</h2>
+  <p>An orphaned lion prince must grow up and save the creatures of his kingdom from his uncle.</p>
+</article>
+
+<article class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="BSXBvor47Zs" data-toggle="modal" data-target="#trailer">
+  <a href="https://www.youtube.com/watch?v=BSXBvor47Zs" target="_blank">
+    <img alt="" src="https://upload.wikimedia.org/wikipedia/en/5/50/The_Breakfast_Club.jpg" width="220" height="342">
+  </a>
+  <h2>The Breakfast Club</h2>
+  <p>High school students from different social circles get to know each other while in detention.</p>
+</article>
+
+<article class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="2UT5xaAfxWU" data-toggle="modal" data-target="#trailer">
+  <a href="https://www.youtube.com/watch?v=2UT5xaAfxWU" target="_blank">
+    <img alt="" src="https://upload.wikimedia.org/wikipedia/en/5/53/Amelie_poster.jpg" width="220" height="342">
+  </a>
+  <h2>Amélie</h2>
+  <p>A shy Parisian woman goes on whimsical adventures to help people and to find herself.</p>
+</article>
+
+<article class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="B34jbC43XzA" data-toggle="modal" data-target="#trailer">
+  <a href="https://www.youtube.com/watch?v=B34jbC43XzA" target="_blank">
+    <img alt="" src="https://upload.wikimedia.org/wikipedia/en/1/1f/Galaxy_Quest_poster.jpg" width="220" height="342">
+  </a>
+  <h2>Galaxy Quest</h2>
+  <p>TV actors meet real aliens who need their help.</p>
+</article>
+
+<article class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="TbQm5doF_Uc" data-toggle="modal" data-target="#trailer">
+  <a href="https://www.youtube.com/watch?v=TbQm5doF_Uc" target="_blank">
+    <img alt="" src="https://upload.wikimedia.org/wikipedia/en/0/05/Frozen_%282013_film%29_poster.jpg" width="220" height="342">
+  </a>
+  <h2>Frozen</h2>
+  <p>A queen, shamed for her magic, struggles to find freedom despite her assigned duty.</p>
+</article>
+
+    </main>
+    <script>
+// Animate in the movie tiles
+$('.movie-tile').hide().first().show('fast', function showNext() {
+    $(this).next('article').show('fast', showNext);
+});
+
+// We'll show videos in a modal for modern browsers with JavaScript enabled
+if ('matchMedia' in window) {
+    // Disable video links
+    $('.movie-tile a').removeAttr('href');
+
+    // Pause the video when the modal is closed
+    $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
+        // Remove the src so the player itself gets removed, as this is the only
+        // reliable way to ensure the video stops playing in IE
+        $('#trailer-video-container').empty();
+    });
+
+    // Start playing the video whenever the trailer modal is opened
+    $(document).on('click', '.movie-tile', function (event) {
+        var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
+        var sourceUrl = 'https://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+        $('#trailer-video-container').empty().append($('<iframe></iframe>', {
+            'id': 'trailer-video',
+            'type': 'text-html',
+            'src': sourceUrl,
+            'frameborder': 0
+        }));
+    });
+} else {
+    // Prevent video modal from opening, since it is not supported
+    $('.movie-tile').removeAttr('data-target');
+}
+
+    </script>
+  </body>
+</html>
