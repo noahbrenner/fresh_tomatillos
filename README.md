@@ -283,4 +283,3 @@ To Do
 * Validate image URLs (no 404) (Check if it's an image format?)
 * README: The user must have an active internet connection to verify images and YouTube videos
 * GitHub Pages example
-* HTML responsive design
