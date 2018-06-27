@@ -13,7 +13,7 @@ To install:
 
 GitHub Repo:
 https://github.com/noahbrenner/fresh_tomatillos
-"""
+"""  # noqa: E501 for the long URL
 
 from setuptools import setup
 
