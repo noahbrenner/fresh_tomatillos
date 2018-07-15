@@ -23,6 +23,9 @@ setup(
     name='fresh_tomatillos',
     version=__version__,
     zip_safe=False,
+    classifiers=[
+        'License :: OSI Approved :: MIT License'
+    ],
     packages=['fresh_tomatillos'],
     package_data={'': ['templates/*', 'static/*']},
     entry_points={
